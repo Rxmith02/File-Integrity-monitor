@@ -1,0 +1,15 @@
+{
+    "scanned_at": "2026-11-18 15:42:09",
+    "monitored_directory": "d:\\HCL PROJECTS\\file-integrity-monitor\\sample_data",
+    "changes": {
+        "modified": [
+            "employee.txt"
+        ],
+        "deleted": [
+            "confidential.txt"
+        ],
+        "new": [
+            "unkown.txt"
+        ]
+    }
+}

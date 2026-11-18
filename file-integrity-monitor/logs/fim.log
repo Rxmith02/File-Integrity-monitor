@@ -1,0 +1,14 @@
+2026-11-18 12:53:36 | INFO     | ============================================================
+2026-11-18 12:53:36 | INFO     | File Integrity Monitoring System  v1.0.0  —  Session started
+2026-11-18 12:53:36 | INFO     | ============================================================
+2026-11-18 12:53:48 | INFO     | Option 1 selected — Create Baseline
+2026-11-18 12:54:24 | INFO     | Scan started — directory: D:\RESUME
+2026-11-18 12:54:25 | INFO     | Scan complete — 1 file(s) hashed, 0 skipped.
+2026-11-18 12:54:25 | INFO     | Baseline saved — 1 file(s) recorded [D:\RESUME]
+2026-11-18 12:54:25 | INFO     | Baseline created for: D:\RESUME
+2026-11-18 12:54:43 | INFO     | Option 2 selected — Scan for Changes
+2026-11-18 12:54:43 | INFO     | Baseline loaded — 1 file(s) on record. Created: 2026-11-18 12:54:25
+2026-11-18 12:56:26 | WARNING  | Invalid folder path entered: python -m unittest discover tests/ -v          # run all 33 tests
+2026-11-18 12:56:28 | WARNING  | Invalid menu choice entered: '
+2026-11-18 12:56:30 | WARNING  | Invalid menu choice entered: 
+2026-11-18 12:56:47 | INFO     | Application exited by user.

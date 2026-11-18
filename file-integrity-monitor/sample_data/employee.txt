@@ -1,0 +1,7 @@
+Employee Name: John Doe
+Employee ID: EMP002
+Department: Canteen
+Role: Waiter
+Salary: 7000
+Join Date: 01-Jan-2021
+Status: Active

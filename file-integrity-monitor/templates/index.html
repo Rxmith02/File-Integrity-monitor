@@ -1,0 +1,182 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — FIM System{% endblock %}
+
+{% block content %}
+
+<!-- Page header -->
+<div class="d-flex align-items-center mb-4">
+  <i class="bi bi-shield-check text-success me-3" style="font-size:2rem;"></i>
+  <div>
+    <h2 class="mb-0 text-white">File Integrity Monitoring</h2>
+    <small class="text-muted">Detect unauthorized changes using SHA-256 cryptographic hashing</small>
+  </div>
+</div>
+
+<!-- Baseline status banner -->
+{% if baseline_exists %}
+<div class="alert" style="background-color:#0d2818; border:1px solid #238636; color:#3fb950;">
+  <i class="bi bi-check-circle-fill me-2"></i>
+  <strong>Baseline is active.</strong>
+  {% if metadata %}
+    &nbsp;|&nbsp; <strong>{{ metadata.file_count }}</strong> file(s) recorded
+    &nbsp;|&nbsp; Created: <strong>{{ metadata.created_at }}</strong>
+    {% if metadata.monitored_directory and metadata.monitored_directory != 'unknown' %}
+      &nbsp;|&nbsp; Directory: <code style="color:#79c0ff;">{{ metadata.monitored_directory }}</code>
+    {% endif %}
+  {% endif %}
+</div>
+{% else %}
+<div class="alert" style="background-color:#2d1a00; border:1px solid #d29922; color:#e3b341;">
+  <i class="bi bi-exclamation-triangle-fill me-2"></i>
+  <strong>No baseline found.</strong> &nbsp;Create a baseline first using Step 1 below.
+</div>
+{% endif %}
+
+<!-- Action Cards Row -->
+<div class="row g-4 mt-1">
+
+  <!-- STEP 1 — Create Baseline -->
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-header">
+        <i class="bi bi-database-add text-success me-2"></i>
+        Step 1 &mdash; Create Baseline
+      </div>
+      <div class="card-body">
+        <p class="text-muted small">
+          Scan a folder and record the SHA-256 hash of every file.
+          This snapshot becomes your trusted reference point.
+        </p>
+        <form method="POST" action="/create-baseline">
+          <div class="mb-3">
+            <label class="form-label small">Folder Path to Monitor</label>
+            <input type="text" class="form-control" name="folder_path"
+                   placeholder="e.g.  d:\HCL PROJECTS\file-integrity-monitor\sample_data"
+                   {% if metadata and metadata.monitored_directory != 'unknown' %}
+                   value="{{ metadata.monitored_directory }}"
+                   {% endif %}
+                   required />
+            <div class="form-text text-muted">Enter the full path of the folder you want to protect.</div>
+          </div>
+          <button type="submit" class="btn btn-primary w-100">
+            <i class="bi bi-database-add me-2"></i>Create Baseline
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 2 — Scan for Changes -->
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-header">
+        <i class="bi bi-search text-warning me-2"></i>
+        Step 2 &mdash; Scan for Changes
+      </div>
+      <div class="card-body">
+        <p class="text-muted small">
+          Re-hash the folder and compare against the saved baseline.
+          Modified, deleted, and new files will be reported immediately.
+        </p>
+        <form method="POST" action="/scan">
+          <div class="mb-3">
+            <label class="form-label small">Folder Path to Scan</label>
+            <input type="text" class="form-control" name="folder_path"
+                   placeholder="e.g.  d:\HCL PROJECTS\file-integrity-monitor\sample_data"
+                   {% if metadata and metadata.monitored_directory != 'unknown' %}
+                   value="{{ metadata.monitored_directory }}"
+                   {% endif %}
+                   required />
+            <div class="form-text text-muted">Must be the same folder used to create the baseline.</div>
+          </div>
+          <button type="submit" class="btn btn-warning w-100">
+            <i class="bi bi-search me-2"></i>Run Integrity Scan
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 3 — View Last Alerts -->
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-header">
+        <i class="bi bi-bell text-info me-2"></i>
+        Step 3 &mdash; View Last Scan Alerts
+      </div>
+      <div class="card-body">
+        <p class="text-muted small">
+          Review the results of the most recent scan without re-scanning.
+          Results are saved automatically after every scan.
+        </p>
+        <a href="/alerts" class="btn btn-info w-100 text-white">
+          <i class="bi bi-bell me-2"></i>View Last Alerts
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 4 — Update Baseline -->
+  <div class="col-md-6">
+    <div class="card h-100">
+      <div class="card-header">
+        <i class="bi bi-arrow-clockwise text-danger me-2"></i>
+        Step 4 &mdash; Update Baseline
+      </div>
+      <div class="card-body">
+        <p class="text-muted small">
+          After reviewing and accepting changes, update the baseline to treat
+          the current file state as the new trusted reference.
+        </p>
+        <form method="POST" action="/update-baseline">
+          <div class="mb-3">
+            <label class="form-label small">Folder Path</label>
+            <input type="text" class="form-control" name="folder_path"
+                   placeholder="e.g.  d:\HCL PROJECTS\file-integrity-monitor\sample_data"
+                   {% if metadata and metadata.monitored_directory != 'unknown' %}
+                   value="{{ metadata.monitored_directory }}"
+                   {% endif %}
+                   required />
+          </div>
+          <button type="submit" class="btn btn-danger w-100"
+                  onclick="return confirm('This will overwrite the existing baseline. Are you sure?')">
+            <i class="bi bi-arrow-clockwise me-2"></i>Update Baseline
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- How it works section -->
+<div class="card mt-4">
+  <div class="card-header"><i class="bi bi-info-circle me-2 text-info"></i>How It Works</div>
+  <div class="card-body">
+    <div class="row text-center g-3">
+      <div class="col-md-4">
+        <div class="p-3" style="background:#1a2a1a; border-radius:8px;">
+          <i class="bi bi-database-fill text-success" style="font-size:1.8rem;"></i>
+          <h6 class="text-white mt-2">SHA-256 Fingerprint</h6>
+          <small class="text-muted">Every file gets a unique 64-character cryptographic fingerprint computed using the SHA-256 algorithm.</small>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-3" style="background:#2a2000; border-radius:8px;">
+          <i class="bi bi-file-earmark-lock text-warning" style="font-size:1.8rem;"></i>
+          <h6 class="text-white mt-2">Baseline Snapshot</h6>
+          <small class="text-muted">All fingerprints are saved as a JSON baseline — the trusted reference for all future comparisons.</small>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="p-3" style="background:#1a1a2a; border-radius:8px;">
+          <i class="bi bi-shield-exclamation text-info" style="font-size:1.8rem;"></i>
+          <h6 class="text-white mt-2">Change Detection</h6>
+          <small class="text-muted">On scan, hashes are recomputed and compared. Any mismatch — modified, deleted, or new — triggers an alert.</small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

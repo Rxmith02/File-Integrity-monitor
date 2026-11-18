@@ -1,0 +1,12 @@
+Monthly Security Report
+=======================
+Date       : November 2026
+Prepared By: Security Operations Team
+
+Summary:
+  - Total incidents this month : 0
+  - Files monitored            : 3
+  - Integrity checks performed : 5
+  - Status                     : ALL SYSTEMS NORMAL
+
+No anomalies detected during this reporting period.

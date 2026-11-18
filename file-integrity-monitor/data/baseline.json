@@ -1,0 +1,10 @@
+{
+    "created_at": "2026-11-18 15:38:12",
+    "monitored_directory": "d:\\HCL PROJECTS\\file-integrity-monitor\\sample_data",
+    "file_count": 3,
+    "files": {
+        "confidential.txt": "48a242460a5ef3ee123ec1a6f73d1e0741101affbadd9d79ebbc2ed2ea78533f",
+        "employee.txt": "1479d27bb7be8ff98f14dc483583387a6e2dcdf88dde2e889fca55583ce5d38d",
+        "report.txt": "932cb7750eca151a656470e6afe81ad381fc524c76ac619d6c1a976ff58bff56"
+    }
+}
